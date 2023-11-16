@@ -58,7 +58,7 @@ MIDDLEWARE = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = False
-SECURE_SSL_REDIRECT = False
+
 #
 # CORS_ALLOWED_ORIGINS = [
 #     "https://d0d4-197-186-2-203.ngrok-free.app",
