@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+h@-djxzwxb8q&d@rz_b-yli5a%+*@k26az)0f$r&(1*m)^ne4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['seahorse-app-haqmk.ondigitalocean.app', '128.199.53.114']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -60,9 +60,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 
-CORS_ALLOWED_ORIGINS = [
-   "https://seahorse-app-haqmk.ondigitalocean.app",
-]
+# CORS_ALLOWED_ORIGINS = [
+#    "https://seahorse-app-haqmk.ondigitalocean.app",
+# ]
 
 CORS_ALLOW_METHODS = (
     "DELETE",
