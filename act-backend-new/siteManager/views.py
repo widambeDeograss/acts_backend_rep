@@ -4,6 +4,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializer import *
@@ -34,6 +35,8 @@ class ContactView(APIView):
 # }
 
 class ApplicationView(APIView):
+    permission_classes = [AllowAny]
+
     @staticmethod
     def post(request):
         data = request.data
@@ -145,8 +148,25 @@ class DashboardView(APIView):
         numberEvents = len(Event.objects.all())
         numberApplication = len(Application.objects.all())
         numberContact = len(Contact.objects.all())
+        numberCourse = len(Course.objects.all())
+        numberStaff = len(Staff.objects.all())
+        numberAdmin = len(Administration.objects.all())
         return Response(
-            {'number_events': numberEvents, 'number_applications': numberApplication, 'number_contacts': numberContact})
+            {'number_events': numberEvents,
+             'number_applications': numberApplication,
+             'number_contacts': numberContact,
+             'number_course': numberCourse,
+             'number_staff': numberStaff,
+             'number_admin': numberAdmin
+             })
+
+
+class StaffView(APIView):
+
+    @staticmethod
+    def get(request):
+        staff = Staff.objects.all()
+        return
 
 
 class DeleteContact(APIView):
@@ -214,3 +234,98 @@ class SendEmail(APIView):
     #     "name": "shayo",
     #     "message": "some demo"
     # }
+
+
+class CourseView(APIView):
+    @staticmethod
+    def post(request):
+        data = request.data
+        serialized = CoursePostSerializer(data=data)
+        if serialized.is_valid():
+            serialized.save()
+            return Response({"save": True})
+        return Response({"save": False, "error": serialized.errors})
+
+    @staticmethod
+    def get(request):
+        queryset = Course.objects.all()
+        serialized = CourseGetSerializer(instance=queryset, many=True)
+        return Response(serialized.data)
+
+
+class DeleteUpdateCourseView(APIView):
+    @staticmethod
+    def post(request):
+        # data = request.data
+        pass
+
+    @staticmethod
+    def get(request):
+        courseId = request.GET.get("id")
+        course = Course.objects.get(id=courseId)
+        course.delete()
+        return Response({"delete": True})
+
+
+class StuffView(APIView):
+    @staticmethod
+    def post(request):
+        data = request.data
+        serialized = StaffPostSerializer(data=data)
+        if serialized.is_valid():
+            serialized.save()
+            return Response({"save": True})
+        return Response({"save": False, "error": serialized.errors})
+
+    @staticmethod
+    def get(request):
+        queryset = Staff.objects.all()
+        serialized = StaffGetSerializer(instance=queryset, many=True)
+        return Response(serialized.data)
+
+
+class DeleteUpdateStuffView(APIView):
+    @staticmethod
+    def post(request):
+        # data = request.data
+        pass
+
+    @staticmethod
+    def get(request):
+        stuffId = request.GET.get("id")
+        stuff = Staff.objects.get(id=stuffId)
+        stuff.delete()
+        return Response({"delete": True})
+
+
+class AdministrationView(APIView):
+    @staticmethod
+    def post(request):
+        data = request.data
+        serialized = AdministrationPostSerializer(data=data)
+        if serialized.is_valid():
+            serialized.save()
+            return Response({"save": True})
+        return Response({"save": False, "error": serialized.errors})
+
+    @staticmethod
+    def get(request):
+        queryset = Administration.objects.all()
+        serialized = AdministrationGetSerializer(instance=queryset, many=True)
+        return Response(serialized.data)
+
+
+class DeleteUpdateAdministrationView(APIView):
+    @staticmethod
+    def post(request):
+        # data = request.data
+        pass
+
+    @staticmethod
+    def get(request):
+        adminId = request.GET.get("id")
+        admin = Administration.objects.get(id=adminId)
+        admin.delete()
+        return Response({"delete": True})
+
+

@@ -79,3 +79,54 @@ class ContactPostSerializer(serializers.ModelSerializer):
             'created_at',
         ]
 
+
+class StaffPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Staff
+        fields = [
+            'full_name',
+            'titles',
+            'image',
+            'education',
+        ]
+
+
+class StaffGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Staff
+        fields = "__all__"
+        depth = 2
+
+
+class CoursePostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = [
+            'category',
+            'course',
+        ]
+
+
+class CourseGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = "__all__"
+        depth = 2
+
+
+class AdministrationPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Administration
+        fields = [
+            'admin_title',
+            'staff_name',
+            'staff_titles',
+            'image',
+        ]
+
+
+class AdministrationGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Administration
+        fields = "__all__"
+        depth = 2

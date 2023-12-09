@@ -4,10 +4,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializer import UserSerializer, ChangePasswordSerializer
-from django.contrib.auth import authenticate, login, update_session_auth_hash
-# from .token import get_user_token
+from django.contrib.auth import authenticate, login
 from .models import User
 from rest_framework.generics import UpdateAPIView
+from .serializer import *
 
 
 class RegisterUser(APIView):
@@ -151,7 +151,7 @@ class ChangePasswordView(UpdateAPIView):
             self.object.set_password(serializer.data.get("new_password"))
             self.object.save()
             response = {
-                'status': 'success',
+                'status': True,
                 'code': status.HTTP_200_OK,
                 'message': 'Password updated successfully',
                 'data': []
@@ -186,6 +186,7 @@ class UpdateUserView(APIView):
         else:
 
             return Response({'message': 'Not Authorized to Update This User'})
+
 
 
 

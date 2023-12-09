@@ -59,7 +59,6 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-
 # CORS_ALLOWED_ORIGINS = [
 #    "https://seahorse-app-haqmk.ondigitalocean.app",
 # ]
@@ -110,6 +109,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # for normal authentication
         'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         # jwt configgurations
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -168,6 +168,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    '/var/www/static/',
+
 ]
 

@@ -12,4 +12,14 @@ urlpatterns = [
     path('delete-contact/<slug:contact_id>', DeleteContact.as_view()),
     path('dashboard', DashboardView.as_view()),
 
+    # New
+    path('course-get-create', CourseView.as_view()),
+    path('course-delete-update', DeleteUpdateCourseView.as_view()),
+
+    path('stuff-get-create', StuffView.as_view()),
+    path('stuff-delete-update', DeleteUpdateStuffView.as_view()),
+
+    path('admin-get-create', AdministrationView.as_view()),
+    path('admin-delete-update', DeleteUpdateAdministrationView.as_view())
+
 ]

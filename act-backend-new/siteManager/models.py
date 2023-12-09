@@ -43,3 +43,31 @@ class Contact(models.Model):
     class Meta:
         db_table = 'contact'
 
+
+class Course(models.Model):
+    category = models.CharField(max_length=200)
+    course = models.CharField(max_length=700)
+
+    def __str__(self):
+        return f'{self.course}'
+
+
+class Staff(models.Model):
+    full_name = models.CharField(max_length=200)
+    titles = models.CharField(max_length=200)
+    image = models.ImageField(upload_to="uploads/", null=True, blank=True)
+    education = models.TextField()
+
+    def __str__(self):
+        return f'{self.full_name}'
+
+
+class Administration(models.Model):
+    admin_title = models.CharField(max_length=200)
+    staff_name = models.CharField(max_length=200)
+    staff_titles = models.CharField(max_length=200)
+    image = models.ImageField(upload_to="uploads/", null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.staff_titles}'
+
