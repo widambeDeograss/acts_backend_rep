@@ -4,6 +4,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from django.db.models import Sum
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -287,8 +288,16 @@ class StuffView(APIView):
 class DeleteUpdateStuffView(APIView):
     @staticmethod
     def post(request):
-        # data = request.data
-        pass
+        data = request.data
+        try:
+            staff = Staff.objects.get(id=data['id'])
+            staff.full_name = data['full_name']
+            staff.titles = data['titles']
+            staff.education = data['education']
+            staff.save()
+            return Response({'update': True})
+        except:
+            return Response({'update': False})
 
     @staticmethod
     def get(request):
@@ -329,3 +338,162 @@ class DeleteUpdateAdministrationView(APIView):
         return Response({"delete": True})
 
 
+class MastersCostTableView(APIView):
+    @staticmethod
+    def post(request):
+        data = request.data
+        serialized = MastersCostTablePostSerializer(data=data)
+        if serialized.is_valid():
+            serialized.save()
+            return Response({"save": True})
+        return Response({"save": False, "error": serialized.errors})
+
+    @staticmethod
+    def get(request):
+        type = request.GET.get('type')
+        queryset = MastersCostTable.objects.filter(type=type)
+        total = MastersCostTable.objects.filter(type=type).aggregate(total=Sum('total_price'))['total']
+        serialized = MastersCostTableGetSerializer(instance=queryset, many=True)
+        return Response({'total': total, 'data': serialized.data})
+
+
+class DeleteUpdateMastersCostTableView(APIView):
+    @staticmethod
+    def post(request):
+        data = request.data
+        try:
+            mct = MastersCostTable.objects.get(id=data['id'])
+            mct.description = data['description']
+            mct.units = data['units']
+            mct.price_per_unit = data['price_per_unit']
+            mct.total_price = data['total_price']
+            mct.type = data['type']
+            mct.save()
+            return Response({'update': True})
+        except:
+            return Response({'update': False})
+
+    @staticmethod
+    def get(request):
+        id = request.GET.get("id")
+        mct = MastersCostTable.objects.get(id=id)
+        mct.delete()
+        return Response({"delete": True})
+
+
+class PhdCostTableView(APIView):
+    @staticmethod
+    def post(request):
+        data = request.data
+        serialized = PhdCostTablePostSerializer(data=data)
+        if serialized.is_valid():
+            serialized.save()
+            return Response({"save": True})
+        return Response({"save": False, "error": serialized.errors})
+
+    @staticmethod
+    def get(request):
+        id = request.GET.get("id")
+        course = Course.objects.get(id=id)
+        queryset = PhdCostTable.objects.filter(course=course)
+        total = PhdCostTable.objects.filter(course=course).aggregate(total=Sum('amount'))['total']
+        serialized = PhdCostTableGetSerializer(instance=queryset, many=True)
+
+        return Response(
+            {'total': total, 'data': serialized.data, 'course': CourseGetSerializer(instance=course, many=False).data})
+
+
+class DeleteUpdatePhdCostTableView(APIView):
+    @staticmethod
+    def post(request):
+        data = request.data
+        try:
+            pct = PhdCostTable.objects.get(id=data['id'])
+            pct.course = data['course']
+            pct.description = data['description']
+            pct.amount = data['amount']
+            pct.save()
+            return Response({'update': True})
+        except:
+            return Response({'update': False})
+
+    @staticmethod
+    def get(request):
+        id = request.GET.get("id")
+        pct = PhdCostTable.objects.get(id=id)
+        pct.delete()
+        return Response({"delete": True})
+
+
+class ImportantInformationView(APIView):
+    @staticmethod
+    def post(request):
+        data = request.data
+        serialized = ImportantInformationPostSerializer(data=data)
+        if serialized.is_valid():
+            serialized.save()
+            return Response({"save": True})
+        return Response({"save": False, "error": serialized.errors})
+
+    @staticmethod
+    def get(request):
+        queryset = ImportantInformation.objects.all()
+        serialized = ImportantInformationGetSerializer(instance=queryset, many=True)
+        return Response(serialized.data[0])
+
+
+class DeleteUpdateImportantInformationView(APIView):
+    @staticmethod
+    def post(request):
+        data = request.data
+        id = request.GET.get('id')
+        print(id)
+        try:
+            pct = ImportantInformation.objects.get(id=id)
+            pct.mission = data['mission']
+            pct.vision = data['vision']
+            pct.message_from_president = data['message_from_president']
+            pct.historical_background = data['historical_background']
+
+            pct.save()
+            return Response({'update': True})
+        except:
+            return Response({'update': False})
+
+    @staticmethod
+    def get(request):
+        id = request.GET.get("id")
+        pct = ImportantInformation.objects.get(id=id)
+        pct.delete()
+        return Response({"delete": True})
+
+
+class GalleryView(APIView):
+    @staticmethod
+    def post(request):
+        data = request.data
+        serialized = GalleryPostSerializer(data=data)
+        if serialized.is_valid():
+            serialized.save()
+            return Response({"save": True})
+        return Response({"save": False, "error": serialized.errors})
+
+    @staticmethod
+    def get(request):
+        queryset = Gallery.objects.all()
+        serialized = GalleryGetSerializer(instance=queryset, many=True)
+        return Response(serialized.data)
+
+
+class DeleteUpdateGalleryView(APIView):
+    @staticmethod
+    def post(request):
+        data = request.data
+        pass
+
+    @staticmethod
+    def get(request):
+        id = request.GET.get("id")
+        pct = Gallery.objects.get(id=id)
+        pct.delete()
+        return Response({"delete": True})

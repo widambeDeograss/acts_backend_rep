@@ -130,3 +130,74 @@ class AdministrationGetSerializer(serializers.ModelSerializer):
         model = Administration
         fields = "__all__"
         depth = 2
+
+
+class MastersCostTablePostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MastersCostTable
+        fields = [
+            'description',
+            'units',
+            'price_per_unit',
+            'total_price',
+            'type',
+        ]
+
+
+class MastersCostTableGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MastersCostTable
+        fields = "__all__"
+        depth = 2
+
+
+class PhdCostTablePostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PhdCostTable
+        fields = [
+            'course',
+            'description',
+            'amount',
+        ]
+
+
+class PhdCostTableGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PhdCostTable
+        fields = "__all__"
+        depth = 2
+
+
+class ImportantInformationPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImportantInformation
+        fields = [
+            'mission',
+            'vision',
+            'message_from_president',
+            'historical_background',
+        ]
+
+
+class ImportantInformationGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImportantInformation
+        fields = "__all__"
+        depth = 1
+
+
+class GalleryPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gallery
+        fields = [
+            'type',
+            'title',
+            'file',
+        ]
+
+
+class GalleryGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gallery
+        fields = "__all__"
+        depth = 1
